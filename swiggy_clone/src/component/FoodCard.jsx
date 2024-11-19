@@ -1,12 +1,20 @@
-import React from 'react'
+import React from 'react';
 import { FaRupeeSign } from "react-icons/fa";
 import { IoIosStar } from "react-icons/io";
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/slices/CartSlice';
 
-const FoodCard = ({ food }) => {
+const FoodCard = ({ food, handleToast }) => {
     const dispatch = useDispatch();
-     
+
+    
+    const handleAddToCart = () => {
+        dispatch(addToCart({ ...food, qty: 1 }));  
+        if (handleToast) {
+            handleToast(food.name);  
+        }
+    };
+
     return (
         <div className='font-bold border-2 bg-white p-5 flex flex-col rounded-lg w-full h-[500px]'>
             <div className='w-full h-[400px] overflow-hidden'>
@@ -29,13 +37,13 @@ const FoodCard = ({ food }) => {
                     <IoIosStar className='text-yellow-500 mr-1' />{food.rating}
                 </span>
                 <button 
-                    onClick={() => dispatch(addToCart(food))}   
-                    className='bg-green-400 font-white rounded-lg w-32 py-3 text-sm hover:bg-lime-500'>
-                    Add to Cart                                                        
+                    onClick={handleAddToCart} 
+                    className='bg-green-400 text-white rounded-lg w-32 py-3 text-sm hover:bg-lime-500'>
+                    Add to Cart                                                         
                 </button>
             </div>
         </div>
-    )
+    );
 }
 
 export default FoodCard;

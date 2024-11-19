@@ -3,10 +3,16 @@ import { IoMdClose } from "react-icons/io";
 import CardItems from './CardItems';
 import { useSelector } from 'react-redux';
 import { FaShoppingCart } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 const Cart = () => {
     const [activeCart, setActiveCart] = useState(true);
     const cartItems = useSelector((state) => state.cart.cart);
-
+    const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    
+    // Calculate total item count
+    const totalItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
+    
+    const navigate = useNavigate()
     console.log(cartItems);
 
     return (
@@ -26,18 +32,17 @@ const Cart = () => {
                     cartItems.length > 0? (                       
                            cartItems.map((item) => {
                             return <CardItems key={item.id} item={item}   />
-                           })
-                       
+                           })                                
                     ) : (
                         <h1 className='text-center text-xl'>Cart is Empty</h1>
                     )
                   }
 
                     <div className='absolute bottom-0 font-bold'>
-                        <h1>Item :</h1>
-                        <h1>Total amount : </h1>
+                        <h1>Item : {totalItems}</h1>
+                        <h1>Total amount : {totalPrice} </h1>
                         <hr className='mt-2 border-1 border-black'/>
-                        <button className='bg-green-400 rounded-lg p-2 hover:bg-green-600 cursor-pointer w-full mt-4 lg:w-[13vw]'>
+                        <button onClick={() => navigate("/protect")} className='bg-green-400 rounded-lg p-2 hover:bg-green-600 cursor-pointer w-full mt-4 lg:w-[13vw]'>
                             Checkout
                         </button>
                     </div>
